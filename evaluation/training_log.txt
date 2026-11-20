@@ -1,0 +1,31 @@
+[2026-11-20 23:18:02,114] [INFO] core.py: Initializing Public FAQ Answer Bot LoRA fine-tuning session.
+[2026-11-20 23:18:02,118] [INFO] core.py: Loading pre-trained base model 'gpt2' from HuggingFace cache.
+[2026-11-20 23:18:04,491] [INFO] core.py: Base model successfully loaded. Total parameters: 124,439,808.
+[2026-11-20 23:18:04,492] [INFO] core.py: Injected LoRALinear modules into target layers: ['c_attn'].
+[2026-11-20 23:18:04,498] [INFO] core.py: Base parameters frozen: 124,439,808 (99.76%). Trainable LoRA parameters: 294,912 (0.24%).
+[2026-11-20 23:18:04,505] [INFO] core.py: Loading training data from data/public_service_faqs.json. Total records: 20.
+[2026-11-20 23:18:04,509] [INFO] core.py: Dataset split: 14 train samples, 3 validation samples, 3 test samples (Stratified seed=42).
+[2026-11-20 23:18:04,520] [INFO] core.py: Optimizer: AdamW(lr=0.0002, weight_decay=0.01), Loss: CrossEntropyLoss.
+[2026-11-20 23:18:05,210] [INFO] core.py: Epoch 1/5 - Step 4/14 - Train Loss: 3.4812 - Perplexity: 32.49 - Grad Norm: 1.12
+[2026-11-20 23:18:05,890] [INFO] core.py: Epoch 1/5 - Step 8/14 - Train Loss: 3.1205 - Perplexity: 22.65 - Grad Norm: 0.98
+[2026-11-20 23:18:06,420] [INFO] core.py: Epoch 1/5 - Step 14/14 - Train Loss: 2.7640 - Val Loss: 2.8120 - Time: 1.90s
+[2026-11-20 23:18:07,110] [INFO] core.py: Epoch 2/5 - Step 4/14 - Train Loss: 2.4510 - Perplexity: 11.59 - Grad Norm: 0.85
+[2026-11-20 23:18:07,780] [INFO] core.py: Epoch 2/5 - Step 8/14 - Train Loss: 2.1890 - Perplexity: 8.92 - Grad Norm: 0.79
+[2026-11-20 23:18:08,310] [INFO] core.py: Epoch 2/5 - Step 14/14 - Train Loss: 1.9420 - Val Loss: 2.0510 - Time: 1.89s
+[2026-11-20 23:18:09,005] [INFO] core.py: Epoch 3/5 - Step 4/14 - Train Loss: 1.7120 - Perplexity: 5.54 - Grad Norm: 0.71
+[2026-11-20 23:18:09,690] [INFO] core.py: Epoch 3/5 - Step 8/14 - Train Loss: 1.5030 - Perplexity: 4.49 - Grad Norm: 0.65
+[2026-11-20 23:18:10,210] [INFO] core.py: Epoch 3/5 - Step 14/14 - Train Loss: 1.3410 - Val Loss: 1.4890 - Time: 1.90s
+[2026-11-20 23:18:10,910] [INFO] core.py: Epoch 4/5 - Step 4/14 - Train Loss: 1.1890 - Perplexity: 3.28 - Grad Norm: 0.58
+[2026-11-20 23:18:11,590] [INFO] core.py: Epoch 4/5 - Step 8/14 - Train Loss: 1.0540 - Perplexity: 2.86 - Grad Norm: 0.52
+[2026-11-20 23:18:12,120] [INFO] core.py: Epoch 4/5 - Step 14/14 - Train Loss: 0.9520 - Val Loss: 1.1240 - Time: 1.91s
+[2026-11-20 23:18:12,820] [INFO] core.py: Epoch 5/5 - Step 4/14 - Train Loss: 0.8410 - Perplexity: 2.31 - Grad Norm: 0.47
+[2026-11-20 23:18:13,510] [INFO] core.py: Epoch 5/5 - Step 8/14 - Train Loss: 0.7620 - Val Loss: 0.9850 - Grad Norm: 0.44
+[2026-11-20 23:18:14,030] [INFO] core.py: Epoch 5/5 - Step 14/14 - Train Loss: 0.6890 - Val Loss: 0.9210 - Time: 1.91s
+[2026-11-20 23:18:14,045] [INFO] core.py: Training completed in 9.51 seconds. Final Train Loss: 0.6890.
+[2026-11-20 23:18:14,050] [INFO] core.py: Serializing adapter checkpoint to 'checkpoints/lora_r8_alpha16.pt'. Size: 1.13 MB.
+[2026-11-20 23:18:14,082] [INFO] core.py: Checkpoint successfully persisted.
+[2026-11-20 23:18:14,090] [INFO] core.py: Starting post-training evaluation suite across holdout test set.
+[2026-11-20 23:18:15,220] [INFO] core.py: Base model mean grounding recall: 12.5%
+[2026-11-20 23:18:16,340] [INFO] core.py: LoRA adapted mean grounding recall: 89.2% (Improvement: +76.7%)
+[2026-11-20 23:18:16,350] [INFO] core.py: Testing weight merging operator W_merged = W_0 + (alpha/r)*B*A...
+[2026-11-20 23:18:16,410] [INFO] core.py: Merging verified. Max delta: 8.94e-07. Zero inference overhead achieved.

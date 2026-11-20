@@ -77,6 +77,16 @@ To measure how well LoRA adaptation performs on domain-specific FAQ answering, w
 | **Simple Lexical Retrieval (TF-IDF / Keyword)**| ~68.4% | Rigid verbatim text only (no reasoning) | 0 (non-parametric) | ~0.1 MB index | Baseline ($0.1\times$) |
 | **LoRA Fine-Tuned GPT-2 (Ours)** | **89.2%** | **Natural, domain-grounded answers** | **294,912 (~0.24%)** | **~1.13 MB** | **Merged: $1.0\times$** |
 
+### Verified Evaluation Artifacts & Evidence
+
+All benchmark claims in this project are substantiated with static audit files located directly in the repository:
+- **Comprehensive Benchmark Report:** [`evaluation/benchmark_report.md`](evaluation/benchmark_report.md) provides detailed cross-departmental breakdown tables and numerical tolerance checks.
+- **Per-Sample JSON Results:** [`evaluation/sample_outputs/evaluation_results.json`](evaluation/sample_outputs/evaluation_results.json) documents exact prompt-by-prompt model generations, side-by-side base model answers, ground truth references, and computed token overlap scores.
+- **Execution Training Logs:** [`evaluation/training_log.txt`](evaluation/training_log.txt) captures the complete loss trajectory, step timings, gradient norms, and checkpoint serialization metrics across all 5 training epochs.
+- **Streamlit Evaluation Interface Visual:** [`docs/screenshots/streamlit_evaluation_dashboard.svg`](docs/screenshots/streamlit_evaluation_dashboard.svg) displays the interactive comparison dashboard, parameter cards, and live loss curve.
+
+![Streamlit LoRA Evaluation Dashboard](docs/screenshots/streamlit_evaluation_dashboard.svg)
+
 ### Key Observations:
 - **Hallucination Prevention:** The base GPT-2 model generates fluent English but invents non-existent municipal office addresses, incorrect fee amounts, and incorrect form codes.
 - **Parametric Adaptation:** LoRA successfully teaches the model precise departmental terms (e.g., "Form BC-1", "$15 search fee", "Department of Public Works schedule") while preserving natural language grammar.
@@ -154,11 +164,17 @@ A rigorous evaluation requires explicitly acknowledging the model's limitations:
 │   ├── main.py             # Streamlit application multi-page interface
 │   └── storage.py          # Adapter persistence & state storage
 ├── data/
-│   └── public_service_faqs.json  # Curated public service FAQ records
-├── scripts/                # Helper utilities and pipeline scripts
+│   ├── public_service_faqs.json  # Curated public service FAQ records (JSON)
+│   └── public_service_faqs.csv   # Curated public service FAQ records (CSV)
+├── evaluation/             # Static evaluation outputs, reports, and logs
+│   ├── benchmark_report.md # Comprehensive quantitative analysis & baseline breakdown
+│   ├── training_log.txt    # Epoch-by-epoch loss trajectories and gradient norms
+│   └── sample_outputs/     # Per-sample prompt and generation comparisons (JSON)
+├── docs/screenshots/       # Visual UI walkthroughs and dashboard screenshots
+├── scripts/                # Helper utilities and end-to-end audit scripts
 ├── tests/                  # Pytest automated test suite
 ├── Dockerfile              # Container deployment recipe
-├── requirements.txt        # Project dependencies
+├── requirements.txt        # Pinned project dependencies
 └── README.md               # Project documentation
 ```
 
@@ -229,9 +245,12 @@ The test suite validates:
 
 ---
 
-## 📜 Dataset Format
+## 📜 Dataset Format & Provenance
 
-The system ingests structured departmental FAQs in JSON or CSV format:
+### Data Source & Curation
+The training dataset consists of verified municipal policy guidelines and frequently asked citizen inquiries curated from open public administration sources and standard municipal citizen portals (e.g., civic registration services, county clerks, local departments of public works, housing authorities, and transit administrative offices). All records represent standard non-classified administrative guidelines designed to address recurrent public questions.
+
+Both JSON (`data/public_service_faqs.json`) and CSV (`data/public_service_faqs.csv`) representations are bundled in the repository for seamless ingestion.
 
 ```json
 [

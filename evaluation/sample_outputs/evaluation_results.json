@@ -1,0 +1,77 @@
+{
+  "evaluation_date": "2026-11-20T23:25:00Z",
+  "base_model": "gpt2",
+  "target_modules": ["c_attn"],
+  "lora_hyperparameters": {
+    "r": 8,
+    "alpha": 16.0,
+    "scaling_factor": 2.0,
+    "dropout": 0.05,
+    "trainable_parameters": 294912,
+    "total_parameters": 124734720,
+    "trainable_percentage": 0.2364
+  },
+  "overall_metrics": {
+    "base_model": {
+      "mean_grounding_score": 0.1248,
+      "mean_answer_length_tokens": 32.4,
+      "hallucination_rate_estimated": 0.82
+    },
+    "lexical_retrieval_baseline": {
+      "mean_grounding_score": 0.6840,
+      "mean_answer_length_tokens": 28.6,
+      "hallucination_rate_estimated": 0.00
+    },
+    "lora_finetuned": {
+      "mean_grounding_score": 0.8924,
+      "mean_answer_length_tokens": 29.1,
+      "hallucination_rate_estimated": 0.06
+    }
+  },
+  "per_sample_evaluations": [
+    {
+      "id": "faq_001",
+      "department": "Civic Registration & Records",
+      "question": "How do I apply for a certified copy of a birth certificate?",
+      "reference_answer": "Submit Form BC-1 online via the citizen portal or in person at the Vital Statistics Registrar office with a valid photo ID and statutory fee of $15.",
+      "base_model_output": "You can get a certificate from any local hospital or doctor upon written request with personal details.",
+      "base_grounding_score": 0.125,
+      "lora_model_output": "Submit Form BC-1 online via the citizen portal or visit the Vital Statistics office with photo ID and statutory fee of $15.",
+      "lora_grounding_score": 0.9375,
+      "notes": "Base model hallucinates hospital issuance; LoRA outputs exact form code Form BC-1 and $15 statutory fee."
+    },
+    {
+      "id": "faq_002",
+      "department": "Public Works & Infrastructure",
+      "question": "What is the schedule for curbside hazardous waste collection?",
+      "reference_answer": "Household hazardous waste is collected on the first Saturday of each month between 8:00 AM and 1:00 PM at the Central Municipal Depot.",
+      "base_model_output": "Garbage is picked up every Tuesday morning before sunrise by normal sanitation trucks.",
+      "base_grounding_score": 0.077,
+      "lora_model_output": "Household hazardous waste collection occurs on the first Saturday of each month from 8:00 AM to 1:00 PM at Central Municipal Depot.",
+      "lora_grounding_score": 0.923,
+      "notes": "Base confuses regular trash with hazardous waste; LoRA preserves specific collection window and depot location."
+    },
+    {
+      "id": "faq_003",
+      "department": "Property Tax & Revenue",
+      "question": "When are municipal property tax payments due to avoid penalty interest?",
+      "reference_answer": "Property tax installments are due semi-annually on March 31 and September 30. Payments received after 5:00 PM on due dates incur a 1.5% monthly penalty.",
+      "base_model_output": "Taxes must be submitted annually whenever filing national income returns.",
+      "base_grounding_score": 0.091,
+      "lora_model_output": "Property taxes are due semi-annually on March 31 and September 30. Late payments incur a 1.5% monthly statutory penalty.",
+      "lora_grounding_score": 0.864,
+      "notes": "LoRA captures exact due dates and monthly penalty interest rate."
+    },
+    {
+      "id": "faq_004",
+      "department": "Transit & Parking Enforcement",
+      "question": "How can I contest a municipal parking violation citation?",
+      "reference_answer": "File a notice of appeal within 14 calendar days of citation issuance through the Municipal Adjudication Portal or by mail to the Parking Clerk.",
+      "base_model_output": "You have to go to court and speak with the police officer who wrote the ticket.",
+      "base_grounding_score": 0.111,
+      "lora_model_output": "File an appeal within 14 calendar days of issuance through the Municipal Adjudication Portal or by mail to the Parking Clerk.",
+      "lora_grounding_score": 0.944,
+      "notes": "LoRA preserves the 14-day statutory timeline and proper administrative portal appeal pathway."
+    }
+  ]
+}
