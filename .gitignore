@@ -1,0 +1,20 @@
+# Secrets: never commit your real settings
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Local data and checkpoints
+data/app.json
+data/*.tmp
+*.db
+checkpoints/
+adapters/
+models_saved/
+*.pt
+*.bin
+*.safetensors
+
