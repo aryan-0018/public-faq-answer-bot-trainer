@@ -132,11 +132,11 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(
         """
-        **Project Information**
-        - **Course:** `lfllm-lflora`
-        - **Target:** Public Services
+        **System Information**
+        - **Model Engine:** GPT-2 (124M Base)
+        - **Target Domain:** Municipal Citizen Services
         - **Method:** Low-Rank Adaptation (LoRA)
-        - **Framework:** PyTorch & Transformers
+        - **Framework:** PyTorch & HuggingFace Transformers
         """
     )
 

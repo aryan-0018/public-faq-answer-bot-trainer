@@ -1,4 +1,4 @@
-"""These pass on day one. They check the plumbing so you notice quickly if you break it."""
+"""Smoke tests validating core dependencies, storage persistence, and configuration defaults."""
 import os
 
 from app import llm

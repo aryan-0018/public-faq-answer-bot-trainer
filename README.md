@@ -265,16 +265,29 @@ You can train either interactively inside the web dashboard or via automated scr
 
 - **Via Web Dashboard:**
   1. Navigate to the **"⚡ LoRA Training"** tab.
-  2. Select Rank $r=8$, Alpha $\alpha=16$, and Epochs $=5$.
-  3. Click **"🚀 Start LoRA Fine-Tuning"**.
-  4. Once complete, navigate to **"💾 Adapter Management"** and click **"Merge Adapter into Base Weights"**.
-  5. Go to **"💬 Citizen FAQ Chat"** to test live policy inquiry queries!
+  2. Configure hyperparameters: `LoRA Rank (r)` (e.g., 8), `LoRA Alpha (α)` (e.g., 16.0), and `Training Epochs` (e.g., 1 to 5).
+  3. Click the **"🚀 Start LoRA Training"** button. The progress bar and loss curve will update live.
+  4. Once complete, navigate to the **"💾 Adapter Management"** tab and click **"🔀 Merge Adapters into Base Model"** for zero-latency inference.
+  5. Go to the **"💬 FAQ Chat"** tab, enter a query (e.g., *"How do I renew my commercial driver's license?"*), and click **"Get Official Answer"**.
 
 - **Via End-to-End Audit Script:**
   Execute the full verification and training pipeline in one command:
   ```bash
   python scripts/verify_e2e.py
   ```
+
+---
+
+## 🖥️ Main Execution Commands
+
+For quick reference, here are the primary commands for running and verifying the project:
+
+| Objective | Command | Description |
+| :--- | :--- | :--- |
+| **Launch Web UI (Primary)** | `streamlit run app/main.py` | Starts the interactive Streamlit dashboard on port 8501 |
+| **Run Automated E2E Pipeline** | `python scripts/verify_e2e.py` | Runs base loading, LoRA injection, training, merging & inference audit |
+| **Run Pytest Test Suite** | `pytest -q` | Executes all unit, regression, and smoke tests |
+| **Containerized Deployment** | `docker run -p 8080:8080 public-faq-answer-bot` | Runs containerized Streamlit server on port 8080 |
 
 ---
 
@@ -293,15 +306,15 @@ Navigate to `http://localhost:8080` in your web browser.
 
 ---
 
-## 🖥️ Application Features & Walkthrough
+## 🖥️ Application Modules Walkthrough
 
-The Streamlit interface provides 6 dedicated modules:
+The Streamlit interface provides 6 dedicated tabs:
 
 1. **📊 Dashboard:** Overview of system status, active adapter details, and trainable vs. frozen parameter breakdown.
 2. **📁 Dataset Manager:** Upload departmental FAQ records (JSON/CSV), validate schemas, detect duplicates, and view train/validation/test splits.
 3. **⚡ LoRA Training:** Configure hyperparameters ($r$, $\alpha$, learning rate, epochs, dropout) and launch live fine-tuning with loss visualization.
-4. **📈 Evaluation Suite:** Compare base GPT-2 with LoRA-adapted responses side-by-side using quantitative grounding scores and perplexity metrics.
-5. **💬 Citizen FAQ Chat:** Interactive chatbot answering citizen inquiries grounded strictly in official departmental guidelines with source citations.
+4. **📈 Evaluation:** Compare base GPT-2 with LoRA-adapted responses side-by-side using quantitative grounding scores and perplexity metrics.
+5. **💬 FAQ Chat:** Interactive chatbot answering citizen inquiries grounded strictly in official departmental guidelines with source citations.
 6. **💾 Adapter Management:** Inspect, serialize, load, and merge trained adapters directly into base model weights.
 
 ---
@@ -324,18 +337,26 @@ The test suite validates:
 
 ## 📜 Dataset Format & Provenance
 
-### Data Source & Curation
-The training dataset consists of verified municipal policy guidelines and frequently asked citizen inquiries curated from open public administration sources and standard municipal citizen portals (e.g., civic registration services, county clerks, local departments of public works, housing authorities, and transit administrative offices). All records represent standard non-classified administrative guidelines designed to address recurrent public questions.
+### Data Source & Collection Methodology
+The training dataset consists of 20 verified municipal and public administration policy items across 5 core civic domains:
+- **Civic Registration & Records:** Birth certificates, property deeds, vital records (sources: USA.gov Vital Records, Municipal Registrar guidelines).
+- **Public Transportation & Licensing:** Commercial driver's license renewal, senior transit passes (sources: Federal Motor Carrier Safety Administration, Federal Transit Administration Section 5307).
+- **Public Works & Environmental Services:** Curbside hazardous waste, bulky waste pickup (sources: US Environmental Protection Agency guidelines, municipal sanitation rules).
+- **Property Tax & Housing Authority:** Property tax deadlines, assessment appeals, residential zoning permits (sources: Municipal Property Tax clearance guidelines).
+- **Municipal Licensing & Community Services:** Public park pavilion reservations, business licensing (sources: City administrative codes).
 
-Both JSON (`data/public_service_faqs.json`) and CSV (`data/public_service_faqs.csv`) representations are bundled in the repository for seamless ingestion.
+Both JSON (`data/public_service_faqs.json`) and CSV (`data/public_service_faqs.csv`) files are bundled with the repository.
 
+### Exact JSON Schema
+Each record conforms to the following schema:
 ```json
 [
   {
-    "category": "Civic Registration & Records",
     "question": "How do I apply for a certified copy of a birth certificate?",
-    "answer": "Submit Form BC-1 online via the citizen portal or in person at the Vital Statistics Registrar office with a valid photo ID and statutory fee of $15.",
-    "source": "https://gov.services.local/vital-records/birth-certificates"
+    "answer": "To obtain a certified copy of a birth certificate, submit Form BC-1 online via the municipal citizen portal or in person at the Vital Statistics Registrar office. You must provide a valid government-issued photo ID, proof of relationship or direct legal interest, and pay the statutory search fee of $15. Processing typically takes 5 to 7 business days.",
+    "category": "Civic Registration & Records",
+    "source": "https://www.usa.gov/birth-certificate",
+    "jurisdiction": "US State Vital Records (Demonstration Standard)"
   }
 ]
 ```
@@ -344,7 +365,7 @@ Each FAQ entry is formatted into an autoregressive prompt during training:
 ```text
 Department: Civic Registration & Records
 Question: How do I apply for a certified copy of a birth certificate?
-Answer: Submit Form BC-1 online via the citizen portal...<|endoftext|>
+Answer: To obtain a certified copy of a birth certificate, submit Form BC-1...<|endoftext|>
 ```
 
 ---

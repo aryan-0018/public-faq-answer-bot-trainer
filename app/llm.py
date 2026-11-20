@@ -1,4 +1,4 @@
-"""One chat call that works with Ollama, Groq or Gemini: change three settings in .env, not the code."""
+"""HTTP client interface for optional external LLM endpoints (Ollama, Groq, Gemini)."""
 import os
 from pathlib import Path
 

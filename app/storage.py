@@ -1,4 +1,4 @@
-"""A tiny key-value store in one JSON file (no server, easy to read). Values can be anything JSON can hold."""
+"""Lightweight JSON document store for persisting key-value application state."""
 import json
 import os
 from pathlib import Path
