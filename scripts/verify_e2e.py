@@ -1,4 +1,4 @@
-"""End-to-End LoRA Verification Script for Drill 3.
+"""End-to-End LoRA Verification Script for Public FAQ Answer Bot Trainer.
 Audits the genuine execution of:
 - Pretrained GPT-2 loading
 - LoRA injection and parameter freezing
@@ -30,7 +30,7 @@ def get_process_memory_mb() -> float:
 
 def main():
     print("=" * 60)
-    print("RIGOROUS END-TO-END LORA VERIFICATION FOR DRILL 3")
+    print("RIGOROUS END-TO-END LORA VERIFICATION")
     print("=" * 60)
 
     # 1. Base Model Loading

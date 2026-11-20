@@ -1,10 +1,10 @@
 """Public FAQ Answer Bot Trainer - Core Implementation
 
-This module implements the 5 Milestones for Drill 3: Building LLMs with LoRA:
+This module implements the core stages for parameter-efficient FAQ model fine-tuning with LoRA:
 1. Dataset preparation, validation, and prompt formatting for public service FAQs.
 2. Custom LoRA adapter injection and training on a pre-trained LLM (GPT-2).
 3. Streamlit user interface coordination and state management.
-4. Qualitative and quantitative accuracy & relevance evaluation.
+4. Qualitative and quantitative accuracy & relevance evaluation, including model limitations.
 5. Adapter weight merging and unmerging for zero-latency production inference.
 """
 
@@ -724,6 +724,13 @@ def milestone_4() -> Dict[str, Any]:
         "lora_adapter_storage_mb": 0.6,
     }
 
+    limitations = [
+        "Small base model (GPT-2 124M) can exhibit repetition on long answer prompts.",
+        "Token overlap grounding score measures lexical overlap, which can penalize valid semantic paraphrasing.",
+        "Out-of-distribution questions outside the FAQ dataset may hallucinate without retrieval-augmented generation (RAG).",
+        "Short training regimes on small FAQ batches may underfit complex multi-step procedural answers.",
+    ]
+
     return {
         "status": "success",
         "question": test_q.question,
@@ -733,6 +740,7 @@ def milestone_4() -> Dict[str, Any]:
         "lora_model_answer": adapted_output,
         "lora_grounding_score": adapted_score,
         "comparison": comparison,
+        "limitations": limitations,
     }
 
 

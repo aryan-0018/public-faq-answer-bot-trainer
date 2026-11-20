@@ -1,6 +1,6 @@
 """Comprehensive Test Suite for Public FAQ Answer Bot Trainer
 
-Tests each of the 5 Milestones required by askThili Drill 3:
+Tests each of the 5 core milestones of the LoRA training pipeline:
 1. Dataset loading, schema validation, prompt formatting, and train/val/test splits.
 2. LoRA adapter injection, parameter freezing, backprop weight updates, saving and loading.
 3. Streamlit application structure and page components.
@@ -109,7 +109,7 @@ def test_main_py_compiles():
 # ============================================================================
 
 def test_milestone_4():
-    """Verify generation evaluation and full fine-tuning vs LoRA comparison."""
+    """Verify generation evaluation, full fine-tuning vs LoRA comparison, and limitation tracking."""
     res = core.milestone_4()
     assert res["status"] == "success"
     assert "question" in res
@@ -117,6 +117,8 @@ def test_milestone_4():
     assert "base_model_answer" in res
     assert "lora_model_answer" in res
     assert res["comparison"]["parameter_reduction_ratio"] > 100.0
+    assert "limitations" in res
+    assert len(res["limitations"]) >= 3
 
 
 def test_grounding_score_calculation():

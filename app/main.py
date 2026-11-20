@@ -351,6 +351,34 @@ with tab_eval:
             st.write(f"**LoRA Model Answer:** {lora_ans}")
             st.metric("Guideline Grounding Score", f"{score * 100:.1f}%")
 
+    st.markdown("---")
+    st.markdown("#### 🔍 Model Limitations & Shortcomings Analysis")
+    with st.expander("View Analysis of Model Limitations, Edge Cases & Failure Modes", expanded=False):
+        st.markdown(
+            """
+            While LoRA fine-tuning significantly improves domain-specific factual grounding on municipal FAQs, 
+            several inherent limitations and failure modes must be considered:
+
+            1. **Small Foundation Model Capacity (GPT-2 124M):**
+               - GPT-2 lacks instruction-following reinforcement learning (RLHF / DPO) and chain-of-thought capabilities.
+               - Complex queries with multiple sub-clauses or negated constraints may lead to partial or truncated generations.
+
+            2. **Lexical Grounding vs. Semantic Paraphrasing:**
+               - The grounding metric relies on content token overlap recall against reference guidelines. If the model uses 
+                 accurate synonyms or paraphrasing not present in the reference policy document, the score may underestimate accuracy.
+               - Conversely, reproducing reference keywords without coherent grammatical connective structure can occasionally inflate lexical overlap.
+
+            3. **Out-of-Distribution & Ambiguous Inquiries:**
+               - Inquiries that span multiple jurisdictions, unrepresented municipal departments, or novel municipal bylaws 
+                 fall outside the training distribution and can cause the model to default to generic base GPT-2 associations.
+               - Recommended Safeguard: Implement confidence calibration and fallback routing to human departmental staff for inquiries with low similarity to known policies.
+
+            4. **Context Length Restrictions & Catastrophic Forgetting Risk:**
+               - Constrained context limits (128-512 tokens) require concise FAQ formats and cannot accommodate multi-page statutory documents.
+               - Although low-rank adaptation preserves pre-trained weights $W_0$, aggressively fine-tuning on a narrow FAQ distribution can slightly degrade zero-shot generation on unrelated public domains.
+            """
+        )
+
 
 # ============================================================================
 # TAB 5: FAQ CHAT
