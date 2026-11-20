@@ -180,39 +180,116 @@ A rigorous evaluation requires explicitly acknowledging the model's limitations:
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Step-by-Step Installation, Configuration & Run Guide
 
-### 1. Prerequisites
-- Python 3.10, 3.11, or 3.12
-- Git
+Follow these comprehensive instructions to set up the environment, configure inference settings, train an adapter, and run the platform.
 
-### 2. Installation
+### Step 1: System Prerequisites
+Ensure your host machine has:
+- **Operating System:** Linux, macOS, or Windows 10/11
+- **Python Version:** Python 3.10, 3.11, or 3.12 (check via `python --version`)
+- **Memory Requirements:** Minimum 4 GB RAM (8 GB recommended for local CPU training)
+- **Disk Space:** ~1.5 GB for base model weights cache and virtual environment packages
 
-Clone the repository and install dependencies:
+### Step 2: Clone the Repository
+Open a terminal (or PowerShell on Windows) and clone:
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/public-faq-answer-bot-trainer.git
+git clone https://github.com/aryan-0018/public-faq-answer-bot-trainer.git
 cd public-faq-answer-bot-trainer
+```
 
-# Create and activate a virtual environment
-python -m venv .venv
+### Step 3: Create and Activate Virtual Environment
+Isolate dependencies using Python's built-in `venv`:
 
-# On Windows:
-.venv\Scripts\activate
-# On Linux / macOS:
-source .venv/bin/activate
+- **On macOS / Linux:**
+  ```bash
+  python3 -m venv .venv
+  source .venv/bin/activate
+  ```
 
-# Install required packages
+- **On Windows (PowerShell):**
+  ```powershell
+  python -m venv .venv
+  .venv\Scripts\Activate.ps1
+  ```
+
+- **On Windows (Command Prompt):**
+  ```cmd
+  python -m venv .venv
+  .venv\Scripts\activate.bat
+  ```
+
+### Step 4: Install Pinned Dependencies
+Install the exact tested dependencies:
+```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 3. Launch the Application
+### Step 5: Configuration (.env Setup)
+The application works immediately out-of-the-box using the built-in PyTorch LoRA engine. For optional external LLM fallback integrations (Ollama, Groq, or Google Gemini), copy `.env.example` to `.env`:
 
-Run the Streamlit web dashboard:
+```bash
+# On Linux / macOS:
+cp .env.example .env
+
+# On Windows:
+copy .env.example .env
+```
+
+Edit `.env` to configure your preferred backend (optional):
+```env
+# Example 1: Local Ollama
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_API_KEY=
+LLM_MODEL=qwen2.5:7b
+
+# Example 2: Groq Cloud
+LLM_BASE_URL=https://api.groq.com/openai/v1
+LLM_API_KEY=your-groq-api-key-here
+LLM_MODEL=llama-3.1-8b-instant
+
+# Path to persistent application storage
+DATA_PATH=data/app.json
+```
+
+### Step 6: Run the Interactive Web UI
+Launch the Streamlit web dashboard:
 ```bash
 streamlit run app/main.py
 ```
-Open [http://localhost:8501](http://localhost:8501) in your browser.
+Your default browser will automatically open to `http://localhost:8501`.
+
+### Step 7: Train and Serve a Custom LoRA Adapter (CLI or UI)
+You can train either interactively inside the web dashboard or via automated script:
+
+- **Via Web Dashboard:**
+  1. Navigate to the **"⚡ LoRA Training"** tab.
+  2. Select Rank $r=8$, Alpha $\alpha=16$, and Epochs $=5$.
+  3. Click **"🚀 Start LoRA Fine-Tuning"**.
+  4. Once complete, navigate to **"💾 Adapter Management"** and click **"Merge Adapter into Base Weights"**.
+  5. Go to **"💬 Citizen FAQ Chat"** to test live policy inquiry queries!
+
+- **Via End-to-End Audit Script:**
+  Execute the full verification and training pipeline in one command:
+  ```bash
+  python scripts/verify_e2e.py
+  ```
+
+---
+
+## 🐳 Docker Deployment Guide
+
+For completely reproducible containerized execution:
+
+```bash
+# Build the Docker image
+docker build -t public-faq-answer-bot .
+
+# Run the container (maps UI to localhost:8080)
+docker run -p 8080:8080 public-faq-answer-bot
+```
+Navigate to `http://localhost:8080` in your web browser.
 
 ---
 
